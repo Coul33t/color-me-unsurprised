@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'Simplifica';
+    src: url('SIMPLIFICA Typeface.ttf');
+}
+
+body {
+    margin: 0;
+}
+
+.display {
+    font-family: "Courier New";
+    font-size: 75px; 
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    text-align: center;
+    height: 25vh;
+}
