@@ -1,3 +1,5 @@
+// TODO: add one more random timezone each time
+
 const ms_in_day = 86400 * 1000;
 
 function complete_values(value) {
@@ -137,6 +139,7 @@ var test = window.setInterval(function(){
 
     document.getElementById("no_ms").getElementsByClassName('number')[0].innerHTML = get_time('no_ms');
 
+    // TODO: change 3 colours at the same time, with various + or -
     if (cycle_count > cycle_limit) {
 
         cycle_count = 0;
