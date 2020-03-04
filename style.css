@@ -7,13 +7,32 @@ body {
     margin: 0;
 }
 
+p {
+    margin: 0;
+}
+
 .display {
-    font-family: "Courier New";
-    font-size: 75px; 
+    font-family: "Simplifica";
+    font-size: 100px;
     display: flex;
     justify-content: center;
     align-content: center;
     flex-direction: column;
     text-align: center;
-    height: 25vh;
+    height: 20vh;
+}
+
+.number {
+    font-size: 75px;
+}
+
+.global_name {
+    font-family: "Simplifica";
+    font-size: 100px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    text-align: center;
+    height: 20vh;
 }

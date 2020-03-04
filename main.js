@@ -64,7 +64,7 @@ function get_time(format) {
         } else if (ms < 100) {
             time_to_return += '0' + ms;
         } else {
-            time_to_return += ms;   
+            time_to_return += ms;
         }
         time_to_return = hours + minutes + seconds + parseInt(ms).toString(16);
 
@@ -77,16 +77,15 @@ function get_time(format) {
 
         var ms = d.getMilliseconds().toString();
 
-        if (ms == 0) {
-            time_to_return += '000';
-        } else if (ms < 10) {
-            time_to_return += '00' + ms;
-        } else if (ms < 100) {
-            time_to_return += '0' + ms;
+        if (ms.length == 1) {
+            ms = '00' + ms;
+        } else if (ms.length == 2) {
+            ms = '0' + ms;
         } else {
-            time_to_return += ms;
+            ms = ms;
         }
-        time_to_return = hours + minutes + seconds + parseInt(ms).toString();
+
+        time_to_return = hours + minutes + seconds + ms;
 
     }
 
@@ -95,7 +94,7 @@ function get_time(format) {
         var minutes = complete_values(d.getMinutes().toString());
         var seconds = complete_values(d.getSeconds().toString());
 
-        time_to_return = hours + minutes + seconds; 
+        time_to_return = hours + minutes + seconds;
     }
 
     return time_to_return;
@@ -117,7 +116,7 @@ function limit_rgb(r, g, b) {
     else if (b < 0)
         b = 0;
 
-    return [r, g, b]; 
+    return [r, g, b];
 }
 
 var increment_ms = 0;
@@ -126,38 +125,75 @@ var r_random = Math.floor((Math.random() * 256))
 var g_random = Math.floor((Math.random() * 256))
 var b_random = Math.floor((Math.random() * 256))
 
+var cycle_count = 0
+var cycle_limit = 500
+var desired_variation = 50
+
+var val_to_change = Math.random() * 3;
+var more_or_less = (Math.random() * 2) - 1;
+
+document.getElementById("yours").getElementsByClassName('global_name')[0].innerHTML = "Yours";
 var test = window.setInterval(function(){
-    document.getElementById("no_ms").innerHTML = get_time('no_ms');
 
-    var val_to_change = Math.random() * 3;
-    var more_or_less = (Math.random() * 2) - 1;
+    document.getElementById("no_ms").getElementsByClassName('number')[0].innerHTML = get_time('no_ms');
 
-    if (more_or_less < 0)
-        more_or_less = -1;
-    else
-        more_or_less = 1;
-        
+    if (cycle_count > cycle_limit) {
+
+        cycle_count = 0;
+        val_to_change = Math.random() * 3;
+        more_or_less = (Math.random() * 2) - 1;
+
+        if (more_or_less < 0)
+            more_or_less = -desired_variation / cycle_limit;
+        else
+            more_or_less = desired_variation / cycle_limit;
+
+        // Not going out of range (and thus not changing the colours for a cycle)
+        if (((val_to_change == 0) && (more_or_less == -1) && (r_random < 0))  ||
+            ((val_to_change == 0) && (more_or_less == 1) && (r_random > 255)) ||
+            ((val_to_change == 1) && (more_or_less == -1) && (g_random < 0))  ||
+            ((val_to_change == 1) && (more_or_less == 1) && (g_random > 255)) ||
+            ((val_to_change == 2) && (more_or_less == -1) && (b_random < 0))  ||
+            ((val_to_change == 2) && (more_or_less == 1) && (b_random > 255)))
+            more_or_less = -more_or_less;
+    }
+
     if (val_to_change < 1) {
         r_random += more_or_less;
+        if (r_random < 0)
+            r_random = 0;
+        if (r_random > 255)
+            r_random = 255;
     } else if (val_to_change < 2) {
         g_random += more_or_less;
+        if (g_random < 0)
+            g_random = 0;
+        if (g_random > 255)
+            g_random = 255;
     } else {
         b_random += more_or_less;
+        if (b_random < 0)
+            b_random = 0;
+        if (b_random > 255)
+            b_random = 255;
     }
+
 
     var rgb_random = limit_rgb(r_random, g_random, b_random);
 
     document.getElementById("no_ms").style.background = 'rgb(' + rgb_random.join(',') + ')';
 
     var rgb_colour = get_time('all_no_labels_rgb');
-    // TODO: here (complete milliseconds)
-    document.getElementById("all_no_labels_rgb").innerHTML = rgb_colour;
+    document.getElementById("all_no_labels_rgb").getElementsByClassName('number')[0].innerHTML = rgb_colour;
+
     r = rgb_colour.substring(0, 3);
     g = rgb_colour.substring(3, 6);
     b = rgb_colour.substring(6, 9);
-    var rgb_colour = limit_rgb(r, g, b);
+    // rescaled such as the range goes from 0 -> 999 to 0 -> 255 (so that the colour doesn't "saturate" too fast)
+    rescaled_b = b * (255 / 999);
+    var rgb_colour = limit_rgb(r, g, rescaled_b);
     document.getElementById("all_no_labels_rgb").style.background = 'rgb(' + rgb_colour.join(',') + ')';
-    
+
     var hexa_colour = get_time('no_ms_no_label');
     document.getElementById("no_ms_no_label").innerHTML = hexa_colour;
     r = parseInt(hexa_colour.substring(0, 2), 16);
@@ -178,5 +214,7 @@ var test = window.setInterval(function(){
     increment_ms += 1;
     if (increment_ms > parseInt('0xFFFFFF'))
         increment_ms = 0;
+
+    cycle_count += 1;
 }, 1)
 
