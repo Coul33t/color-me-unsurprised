@@ -134,7 +134,7 @@ var desired_variation = 50
 var val_to_change = Math.random() * 3;
 var more_or_less = (Math.random() * 2) - 1;
 
-document.getElementById("yours").getElementsByClassName('global_name')[0].innerHTML = "Yours";
+document.getElementById("yours").getElementsByClassName('global_name')[0].innerHTML = "Take your time";
 var test = window.setInterval(function(){
 
     document.getElementById("no_ms").getElementsByClassName('number')[0].innerHTML = get_time('no_ms');
