@@ -1,4 +1,8 @@
 // TODO: add one more random timezone each time
+// TODO: use L*a*b* for colour and rescale such as:
+//          12h     -> 100L* and 0h -> 0L* (with minutes increments)
+//          60min   -> 100a* (with seconds increments)
+//          60s     -> 100b* (with ms increments)
 
 const ms_in_day = 86400 * 1000;
 
